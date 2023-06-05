@@ -24,6 +24,7 @@ final class ImageGeneratorViewController: UIViewController {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.accessibilityIdentifier = ImageGeneratorVCAIDs.imageView
         return imageView
     }()
     
@@ -38,6 +39,7 @@ final class ImageGeneratorViewController: UIViewController {
         textField.leftView = UIView(frame: .init(x: 0, y: 0, width: 5, height: 5))
         textField.delegate = self
         textField.autocorrectionType = .no
+        textField.accessibilityIdentifier = ImageGeneratorVCAIDs.textField
         return textField
     }()
     
@@ -49,6 +51,7 @@ final class ImageGeneratorViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
         button.isEnabled = false
+        button.accessibilityIdentifier = ImageGeneratorVCAIDs.addTovFavoriteButton
         return button
     }()
     
@@ -94,6 +97,12 @@ final class ImageGeneratorViewController: UIViewController {
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         requestButton.addTarget(self, action: #selector(getImage), for: .touchUpInside)
         favoriteButton.addTarget(self, action: #selector(addToFavorite), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
     
     private func makeSubviewsLayout() {
